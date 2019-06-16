@@ -3,14 +3,6 @@ provider "aws" {
   version = "~> 2.14"
 }
 
-terraform {
-  backend "remote" {
-    workspaces {
-      prefix = "site-"
-    }
-  }
-}
-
 module "distribution" {
   source                      = "./modules/distribution"
   domain_name                 = var.domain_name
