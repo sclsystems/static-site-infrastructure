@@ -7,9 +7,10 @@ For use as a Git Module within static site projects
 Note: Make sure you edit the `terraform.tfvars` file with appropriate values
 
 ```bash
+cd platform/src
+
 terraform init
 
-cd platform/src
 terraform apply \
     --var-file ../../app/terraform.tfvars
 ```
