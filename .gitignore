@@ -33,3 +33,7 @@ override.tf.json
 
 # Workspace
 src/workspace.tf
+
+terraform.auto.tfvars
+changes
+env

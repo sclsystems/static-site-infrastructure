@@ -1,8 +1,3 @@
-provider "aws" {
-  region  = var.region
-  version = "~> 2.14"
-}
-
 module "distribution" {
   source                      = "./modules/distribution"
   domain_name                 = var.domain_name
