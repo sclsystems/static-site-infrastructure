@@ -1,4 +1,4 @@
-output "hosted_zone_id" {
+output "cloudfront_hosted_zone_id" {
   value = aws_cloudfront_distribution.s3_distribution.hosted_zone_id
 }
 
