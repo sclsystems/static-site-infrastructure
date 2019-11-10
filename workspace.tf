@@ -5,7 +5,3 @@ terraform {
     workspaces {}
   }
 }
-
-provider "aws" {
-  region = var.aws_region
-}
