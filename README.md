@@ -2,17 +2,27 @@
 
 For use as a Git Module within static site projects
 
-## Setup
+## Applying Changes
 
-Note: Make sure you edit the `terraform.tfvars` file with appropriate values
+1. Add this repo as a Git Module to your static site repo
 
-Note: Make sure you edit `workspace.tf` for the appropriate Terraform Remote
+2. Add a `terraform.auto.tfvars` file and include the following variables
+
+```hcl-terraform
+aws_region              = "us-east-1"
+domain_name             = "scl.systems"
+project_name            = "scl-systems-static-site"
+hosted_zone_id          = "ABCDEF1234566789"
+git_repository          = "https://github.com/sclsystems/static-site-infrastructure.git"
+buildspec_location      = ".cicd/buildspec.yaml"
+cloudfront_refer_secret = "my_secret"
+```
+
+3. Add your organisation and name to `workspace.tf`
+
+4. Deploy the cluster using terraform
 
 ```bash
-cd platform/src
-
-terraform init
-
-terraform apply \
-    --var-file ../../app/terraform.tfvars
+make terraform-plan
+make terraform-apply
 ```

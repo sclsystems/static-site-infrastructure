@@ -1,8 +1,3 @@
-provider "aws" {
-  region  = var.region
-  version = "~> 2.14"
-}
-
 module "distribution" {
   source                      = "./modules/distribution"
   domain_name                 = var.domain_name
@@ -11,10 +6,11 @@ module "distribution" {
 }
 
 module "dns" {
-  source                 = "./modules/dns"
-  domain_name            = var.domain_name
-  hosted_zone_id         = module.distribution.hosted_zone_id
-  cloudfront_domain_name = module.distribution.cloudfront_domain_name
+  source                    = "./modules/dns"
+  domain_name               = var.domain_name
+  cloudfront_hosted_zone_id = module.distribution.cloudfront_hosted_zone_id
+  domain_hosted_zone_id     = var.domain_hosted_zone_id
+  cloudfront_domain_name    = module.distribution.cloudfront_domain_name
 }
 
 module "integration" {
