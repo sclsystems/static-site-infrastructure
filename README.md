@@ -18,8 +18,6 @@ buildspec_location      = ".cicd/buildspec.yaml"
 cloudfront_refer_secret = "my_secret"
 ```
 
-3. Add your organisation and name to `workspace.tf`
-
 4. Deploy the cluster using terraform
 
 ```bash
