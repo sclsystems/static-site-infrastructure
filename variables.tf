@@ -18,10 +18,6 @@ variable "cloudfront_refer_secret" {
   type = "string"
 }
 
-variable "aws_region" {
-  type = "string"
-}
-
 variable "domain_hosted_zone_id" {
   type = "string"
 }
