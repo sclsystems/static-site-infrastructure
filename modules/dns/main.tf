@@ -18,6 +18,20 @@ resource "aws_route53_record" "domain_web" {
   }
 }
 
+resource "aws_route53_record" "domain_www" {
+  count = length(concat([var.domain_name], var.mirror_domains))
+
+  zone_id = concat([var.domain_name], var.mirror_domains)[count.index].hosted_zone_id
+  name    = "www.${concat([var.domain_name], var.mirror_domains)[count.index].domain}"
+  type    = "A"
+
+  alias {
+    evaluate_target_health = false
+    name                   = var.cloudfront_domain_name
+    zone_id                = var.cloudfront_hosted_zone_id
+  }
+}
+
 resource "aws_acm_certificate" "domain_certificate" {
   domain_name       = var.domain_name.domain
   validation_method = "DNS"
