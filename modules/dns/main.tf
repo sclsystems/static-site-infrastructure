@@ -1,6 +1,17 @@
+locals {
+  all_domains_list = [
+    for host in concat([var.domain_name], var.mirror_domains) : host.domain
+  ]
+  alternative_domains_list = [
+    for host in concat(var.mirror_domains) : host.domain
+  ]
+}
+
 resource "aws_route53_record" "domain_web" {
-  zone_id = var.domain_hosted_zone_id
-  name    = var.domain_name
+  count = length(concat([var.domain_name], var.mirror_domains))
+
+  zone_id = concat([var.domain_name], var.mirror_domains)[count.index].hosted_zone_id
+  name    = concat([var.domain_name], var.mirror_domains)[count.index].domain
   type    = "A"
 
   alias {
@@ -10,9 +21,11 @@ resource "aws_route53_record" "domain_web" {
   }
 }
 
-resource "aws_route53_record" "domain_web_www" {
-  zone_id = var.domain_hosted_zone_id
-  name    = "www.${var.domain_name}"
+resource "aws_route53_record" "domain_www" {
+  count = length(concat([var.domain_name], var.mirror_domains))
+
+  zone_id = concat([var.domain_name], var.mirror_domains)[count.index].hosted_zone_id
+  name    = "www.${concat([var.domain_name], var.mirror_domains)[count.index].domain}"
   type    = "A"
 
   alias {
@@ -23,10 +36,14 @@ resource "aws_route53_record" "domain_web_www" {
 }
 
 resource "aws_acm_certificate" "domain_certificate" {
-  domain_name       = var.domain_name
+  domain_name       = var.domain_name.domain
   validation_method = "DNS"
 
-  subject_alternative_names = ["*.${var.domain_name}"]
+  subject_alternative_names = concat(
+    local.alternative_domains_list,
+    formatlist("*.%s", local.alternative_domains_list),
+    ["*.${var.domain_name.domain}"]
+  )
 
   lifecycle {
     create_before_destroy = true
