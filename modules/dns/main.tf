@@ -2,6 +2,9 @@ locals {
   all_domains_list = [
     for host in concat([var.domain_name], var.mirror_domains) : host.domain
   ]
+  alternative_domains_list = [
+    for host in concat(var.mirror_domains) : host.domain
+  ]
 }
 
 resource "aws_route53_record" "domain_web" {
@@ -37,8 +40,9 @@ resource "aws_acm_certificate" "domain_certificate" {
   validation_method = "DNS"
 
   subject_alternative_names = concat(
-    local.all_domains_list,
-    formatlist("*.%s", local.all_domains_list)
+    local.alternative_domains_list,
+    formatlist("*.%s", local.alternative_domains_list),
+    ["*.${var.domain_name.domain}"]
   )
 
   lifecycle {
