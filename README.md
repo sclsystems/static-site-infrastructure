@@ -9,10 +9,15 @@ For use as a Git Module within static site projects
 2. Add a `terraform.auto.tfvars` file and include the following variables
 
 ```hcl-terraform
-aws_region              = "us-east-1"
-domain_name             = "scl.systems"
+domain_name = {
+  domain         = "ABCDEF1234566789"
+  hosted_zone_id = "scl.systems"
+}
+mirror_domains = [{
+  domain         = "ABCDEF1234566780"
+  hosted_zone_id = "example.com"
+}]
 project_name            = "scl-systems-static-site"
-hosted_zone_id          = "ABCDEF1234566789"
 git_repository          = "https://github.com/sclsystems/static-site-infrastructure.git"
 buildspec_location      = ".cicd/buildspec.yaml"
 cloudfront_refer_secret = "my_secret"

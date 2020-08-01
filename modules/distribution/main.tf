@@ -1,10 +1,13 @@
 locals {
   s3_origin_id = aws_s3_bucket.bucket.id
+  all_domains_list = [
+    for host in concat([var.domain_name], var.mirror_domains) : host.domain
+  ]
 }
 
 resource "aws_s3_bucket" "bucket" {
   acl           = "private"
-  bucket_prefix = "${var.domain_name}-"
+  bucket_prefix = "${var.domain_name.domain}-"
 
   website {
     index_document = "index.html"
@@ -65,7 +68,10 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = "index.html"
-  aliases             = ["www.${var.domain_name}", var.domain_name]
+  aliases = concat(
+    local.all_domains_list,
+    formatlist("www.%s", local.all_domains_list)
+  )
 
   default_cache_behavior {
     allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]

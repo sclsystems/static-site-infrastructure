@@ -1,5 +1,5 @@
 resource "aws_iam_role" "integration_role" {
-  name_prefix        = "${var.domain_name}-"
+  name_prefix        = "${var.domain_name.domain}-"
   assume_role_policy = data.aws_iam_policy_document.integration_role_document.json
 }
 
@@ -17,7 +17,7 @@ data "aws_iam_policy_document" "integration_role_document" {
 
 resource "aws_iam_role_policy" "integration_role_policy" {
   role        = aws_iam_role.integration_role.name
-  name_prefix = "${var.domain_name}-"
+  name_prefix = "${var.domain_name.domain}-"
 
   policy = data.aws_iam_policy_document.integration_role_policy_document.json
 }

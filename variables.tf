@@ -1,23 +1,33 @@
 variable "domain_name" {
-  type = "string"
+  type = object({
+    domain         = string
+    hosted_zone_id = string
+  })
+}
+
+variable "mirror_domains" {
+  type = list(object({
+    domain         = string
+    hosted_zone_id = string
+  }))
 }
 
 variable "project_name" {
-  type = "string"
+  type = string
 }
 
 variable "git_repository" {
-  type = "string"
+  type = string
 }
 
 variable "buildspec_location" {
-  type = "string"
+  type = string
 }
 
 variable "cloudfront_refer_secret" {
-  type = "string"
+  type = string
 }
 
-variable "domain_hosted_zone_id" {
-  type = "string"
+variable "aws_region" {
+  type = string
 }
