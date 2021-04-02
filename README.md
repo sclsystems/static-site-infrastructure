@@ -26,6 +26,6 @@ cloudfront_refer_secret = "my_secret"
 4. Deploy the cluster using terraform
 
 ```bash
-make terraform-plan
+make terraform-pla
 make terraform-apply
 ```
